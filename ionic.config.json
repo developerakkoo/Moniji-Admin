@@ -1,0 +1,7 @@
+{
+  "name": "Moniji-Admin",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
