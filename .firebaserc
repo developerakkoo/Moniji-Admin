@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "moniji": {
+      "hosting": {
+        "app": [
+          "moniji"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "moniji"
+  }
+}
