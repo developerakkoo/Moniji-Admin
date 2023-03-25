@@ -15,6 +15,22 @@ const routes: Routes = [
     path: 'login',
     loadChildren: () => import('./auth/login/login.module').then( m => m.LoginPageModule)
   },
+  {
+    path: 'settings',
+    loadChildren: () => import('./settings/settings.module').then( m => m.SettingsPageModule)
+  },
+  {
+    path: 'notifications/:userId',
+    loadChildren: () => import('./notifications/notifications.module').then( m => m.NotificationsPageModule)
+  },
+  {
+    path: 'sub-admin',
+    loadChildren: () => import('./sub-admin/sub-admin.module').then( m => m.SubAdminPageModule)
+  },
+  {
+    path: 'enquiry-detail',
+    loadChildren: () => import('./enquiry-detail/enquiry-detail.module').then( m => m.EnquiryDetailPageModule)
+  },
 ];
 
 @NgModule({

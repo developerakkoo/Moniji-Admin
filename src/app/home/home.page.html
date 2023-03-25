@@ -4,7 +4,11 @@
       Dashboard
     </ion-title>
     <ion-button (click)="openNotifications()" fill="clear" slot="end">
-      <ion-icon slot="icon-only" name="add"></ion-icon>
+      <ion-icon slot="icon-only" name="notifications"></ion-icon>
+      <ion-badge color="primary" mode="ios">42</ion-badge>
+    </ion-button>
+    <ion-button (click)="openSettings()" fill="clear" slot="end">
+      <ion-icon slot="icon-only" name="settings"></ion-icon>
     </ion-button>
   </ion-toolbar>
 </ion-header>
@@ -15,5 +19,84 @@
       <ion-title size="large">Dashboard</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <ion-segment value="1" (ionChange)="segmentChanged($event)">
+    <ion-segment-button color="danger" value="1">
+      <ion-label color="danger">Enquiry</ion-label>
+    </ion-segment-button>
+    <ion-segment-button  value="2">
+      <ion-label color="warning">Pending</ion-label>
+    </ion-segment-button>
+    <ion-segment-button  value="3">
+      <ion-label color="secondary">Partial Complete</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="4">
+      <ion-label  color="success">Completed</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="8" offset="2">
+        <!-- <ion-item lines="full" >
+          <ion-label>Select Date</ion-label>
+          <ion-datetime-button datetime="startdatetime"></ion-datetime-button>
+        </ion-item>
+        <ion-item>
+          <ion-label>Select Party</ion-label>
+          <ion-select  multiple="true" placeholder="Select Party">
+            <ion-select-option value="peperoni">Akshay</ion-select-option>
+            <ion-select-option value="hawaii">Ramesh</ion-select-option>
+          </ion-select>
+        </ion-item>
+      
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime  #datetime
+            min="2023" max="2050" (ionChange)="dateChangedStart(datetime.value)" presentation="date" id="startdatetime"></ion-datetime>
+          </ng-template>
+        </ion-modal> -->
+        <ion-list>
+         
+          <!-- <ion-item button (click)="openDetails()">
+            <ion-avatar slot="start">
+              <img [src]="" />
+            </ion-avatar>
+            <ion-label>
+              <p> <strong>Order ID</strong>1234 </p>
+              <p> <strong>Quantity</strong> 45</p>
+              <p> <strong>Date</strong>23-08-2023 </p>
+            </ion-label>
+          </ion-item> -->
+
+          <table id="customers">
+            <tr>
+              <th>Order ID</th>
+              <th>Invoice No</th>
+              <th>Date</th>
+              <th>Party</th>
+              <th>Status</th>
+            </tr>
+            <tr>
+              <td (click)="openDetails()">0000</td>
+              <td>ADVF123</td>
+              <td>23/08/2023</td>
+              <td>Ramesh Technologies</td>
+              <td>
+                <ion-item>
+                  <ion-select (ionChange)="statusSelectEvent($event)" value="completed" multiple="false">
+                    <ion-select-option value="completed">Completed</ion-select-option>
+                    <ion-select-option value="partial">Partial</ion-select-option>
+                    <ion-select-option value="pending">Pending</ion-select-option>
+                    <ion-select-option value="notavailable">Not Available</ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </td>
+            </tr>
+          </table>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
 </ion-content>
