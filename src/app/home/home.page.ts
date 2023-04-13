@@ -2,8 +2,8 @@ import { EnquiryDetailPage } from './../enquiry-detail/enquiry-detail.page';
 import { LoadingController, AlertController, ModalController } from '@ionic/angular';
 import { Auth } from '@angular/fire/auth';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component } from '@angular/core';
-import { Database, object, list, listVal, objectVal, getDatabase } from '@angular/fire/database';
+import { Component, inject } from '@angular/core';
+
 
 @Component({
   selector: 'app-home',
@@ -21,21 +21,17 @@ export class HomePage {
 
   statusSelected: string = "completed";
 
+
   constructor(private router: Router,
               private route: ActivatedRoute,
               private loadingController: LoadingController,
               private alertController: AlertController,
               private modalController: ModalController,
-              private auth: Auth,
-              private db: Database) {
+             ) 
+              {
                 this.userId = this.route.snapshot.paramMap.get('userId');
                 console.log(`UserID in Home:- ${this.userId}`);
-
-                this.auth.onAuthStateChanged((f) =>{
-                  console.log(f?.uid);
-                  
-                })
-                
+                this.getAllOrders(1);
               }
 
               async presentLoading(msg: string) {
@@ -63,7 +59,7 @@ export class HomePage {
               }
 
               openSettings(){
-                this.router.navigate(['settings', this.userId])
+                this.router.navigate(['settings'])
               }
 
               dateChangedStart(date:any){
@@ -71,6 +67,12 @@ export class HomePage {
                 
               }
 
+
+              async getAllOrders(status: any){
+              }
+
+
+              
               segmentChanged(ev: any){
                 console.log(ev.detail.value);
                 if(ev.detail.value == 1){

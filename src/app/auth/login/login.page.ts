@@ -1,8 +1,11 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, inject, OnInit } from '@angular/core';
 import { Auth, getAuth,createUserWithEmailAndPassword ,signInWithEmailAndPassword} from '@angular/fire/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
+import { Subscription } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -12,10 +15,14 @@ import { AlertController, LoadingController } from '@ionic/angular';
 export class LoginPage implements OnInit {
 
   loginForm: FormGroup;
+
+  loginSub!: Subscription;
+
   constructor(private auth: Auth, 
               private router: Router,
               private loadingController: LoadingController,
               private alertController: AlertController,
+              private http: HttpClient,
               private fb: FormBuilder) { 
                 this.loginForm = this.fb.group({
                   email:[, [Validators.required]],
@@ -44,20 +51,35 @@ export class LoginPage implements OnInit {
   
     await alert.present();
   }
+
   login(){
     this.presentLoading("Logging you in...");
-    signInWithEmailAndPassword(this.auth, this.loginForm.value.email, this.loginForm.value.password)
-    .then((s) =>{
-      console.log(s);
-      this.loadingController.dismiss();
-      this.router.navigate(['home', s?.user?.uid]);
-      
-    }).catch((error) =>{
+    let body = {
+      email: this.loginForm.value.email,
+      password: this.loginForm.value.password
+    }
+    this.loginSub = this.http.post(environment.API + "/login", body)
+    .subscribe(async (user: any) =>{
+      console.log(user);
+      this.loadingController.dismiss()
+      this.router.navigate(['home', user['userId']])
+    }, async (error) =>{
       console.log(error);
       this.loadingController.dismiss();
-      this.presentAlert(error.message, "Error");
-      
+      this.presentAlert(error.error.messagee, "Error");
     })
+    // signInWithEmailAndPassword(this.auth, this.loginForm.value.email, this.loginForm.value.password)
+    // .then((s) =>{
+    //   console.log(s);
+    //   this.loadingController.dismiss();
+    //   this.router.navigate(['home', s?.user?.uid]);
+      
+    // }).catch((error) =>{
+    //   console.log(error);
+    //   this.loadingController.dismiss();
+    //   this.presentAlert(error.message, "Error");
+      
+    // })
 
   }
 }

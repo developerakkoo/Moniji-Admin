@@ -5,6 +5,7 @@ import { Database, getDatabase, onChildAdded, ref, set, update } from '@angular/
 import { Router, ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-notifications',
@@ -18,6 +19,8 @@ export class NotificationsPage implements OnInit {
 
   userRef:any;
   users:any;
+
+  acceptUserSub!: Subscription;
   constructor(private router: Router,
               private route: ActivatedRoute,
               private db: Database,
@@ -27,7 +30,7 @@ export class NotificationsPage implements OnInit {
               private auth: Auth) {
                 this.userId = this.route.snapshot.paramMap.get("userId");
                 this.homeRoute = `home/${this.userId}`;
-                this.db = getDatabase();
+                
                 // this.userRef = ref(this.db, "Users");
                 // onChildAdded(this.userRef, (data) => {
                 //   console.log(data.key);
@@ -40,11 +43,15 @@ export class NotificationsPage implements OnInit {
                }
 
   ngOnInit() {
-    this.http.get("https://moniji-default-rtdb.firebaseio.com/Users.json/").subscribe((res:any) =>{
-      this.users = Object.keys(res).map((key) => { return res[key] });
+    this.http.get(environment.API + "/user")
+    .subscribe((res:any) =>{
+      this.users = res['user'];
     console.log(this.users);
     console.log(res);
     
+      
+    }, (error) =>{
+      console.log(error);
       
     })
   }
@@ -87,45 +94,35 @@ export class NotificationsPage implements OnInit {
           text: 'Okay',
           handler: async () => {
             if(isAccepted){
-              console.log("Accpet the user" + user);
+              console.log(user);
               //REgister the user and set isAcceopetd and message
-              createUserWithEmailAndPassword(this.auth, user?.email, user?.password)
-              .then(async (success) =>{
-                console.log(success);
-                const postData = {
-                  email: user?.email,
-                  password: user?.password,
-                  address: user?.address,
-                  gst: user?.gst,
-                  mobile: user?.mobile,
-                  key: user?.key,
-                  company: user?.company,
-                  city: user?.city,
-                  isAccepted: true,
-                  message: "Your Application is accpeted by Moniji Enterprices!"
-                };
-                const updates:any = {};
-                updates['/Users/' + user?.key + '/'] = postData;
-                update(ref(this.db), updates)
-                .then((user) =>{
-                  console.log(user);
-                  
-                }).catch((error) =>{
-                  console.log(error);
-                  
-                })
-               
+              this.acceptUserSub = this.http.put(environment.API + '/updateUser/status/' + this.userId, {
+                userId: user['_id'],
+                id: true
+              })
+              .subscribe((user:any) =>{
+                console.log(user);
                 
+              }, (error:any) =>{
+                console.log(error);
                 
-              }).catch((error) =>{
-
               })
              
             }
             else if(!isAccepted){
-              console.log("Reject the user" + user);
+              console.log(user);
               //set isAccepted to false and message to user inputs
-              
+              this.acceptUserSub = this.http.put(environment.API + '/updateUser/status/' + this.userId, {
+                userId: user['_id'],
+                id: false
+              })
+              .subscribe((user:any) =>{
+                console.log(user);
+                
+              }, (error:any) =>{
+                console.log(error);
+                
+              })
             }
           }
         }
