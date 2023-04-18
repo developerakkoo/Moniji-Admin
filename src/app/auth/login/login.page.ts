@@ -62,24 +62,13 @@ export class LoginPage implements OnInit {
     .subscribe(async (user: any) =>{
       console.log(user);
       this.loadingController.dismiss()
-      this.router.navigate(['home', user['userId']])
+      this.router.navigate(['home', user['postResponse']['userId']])
     }, async (error) =>{
       console.log(error);
       this.loadingController.dismiss();
       this.presentAlert(error.error.messagee, "Error");
     })
-    // signInWithEmailAndPassword(this.auth, this.loginForm.value.email, this.loginForm.value.password)
-    // .then((s) =>{
-    //   console.log(s);
-    //   this.loadingController.dismiss();
-    //   this.router.navigate(['home', s?.user?.uid]);
-      
-    // }).catch((error) =>{
-    //   console.log(error);
-    //   this.loadingController.dismiss();
-    //   this.presentAlert(error.message, "Error");
-      
-    // })
+   
 
   }
 }

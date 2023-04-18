@@ -97,15 +97,17 @@ export class NotificationsPage implements OnInit {
               console.log(user);
               //REgister the user and set isAcceopetd and message
               this.acceptUserSub = this.http.put(environment.API + '/updateUser/status/' + this.userId, {
-                userId: user['_id'],
-                id: true
+                id: user['_id'],
+                isActive: true
               })
-              .subscribe((user:any) =>{
-                console.log(user);
-                
-              }, (error:any) =>{
-                console.log(error);
-                
+              .subscribe({
+                next: (value) =>{
+                  console.log(value);
+                  
+                }, error(err) {
+                  console.log(err);
+                  
+                },
               })
              
             }
@@ -113,8 +115,8 @@ export class NotificationsPage implements OnInit {
               console.log(user);
               //set isAccepted to false and message to user inputs
               this.acceptUserSub = this.http.put(environment.API + '/updateUser/status/' + this.userId, {
-                userId: user['_id'],
-                id: false
+                id: user['_id'],
+                isActive: false
               })
               .subscribe((user:any) =>{
                 console.log(user);
