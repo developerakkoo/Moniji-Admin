@@ -6,6 +6,7 @@ import { Component, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { Socket } from 'ngx-socket-io';
 
 
 @Component({
@@ -17,6 +18,8 @@ export class HomePage {
 
   userId;
 
+  users:any[] = [];
+
   isEnquiry:boolean = true;
   isPending:boolean = false;
   isPartial:boolean = false;
@@ -27,6 +30,7 @@ export class HomePage {
   getOrderSub!: Subscription;
   acceptOrderSub!: Subscription;
   rejectOrderSub!: Subscription;
+  getUserSub!: Subscription;
 
   orders!:any[];
 
@@ -35,12 +39,23 @@ export class HomePage {
               private loadingController: LoadingController,
               private alertController: AlertController,
               private http: HttpClient,
+              private io: Socket,
               private modalController: ModalController,
              ) 
               {
                 this.userId = this.route.snapshot.paramMap.get('userId');
                 console.log(`UserID in Home:- ${this.userId}`);
+                // this.io.connect();
+                // this.io.on('get:order', (order:any) =>{
+                //   console.log(order);
+                //   console.log("Socket Order ");
+                //   this.orders = order;
+                  
+                  
+                  
+                // })
                 this.getAllOrders(1);
+                  this.getUser();
               }
 
               async presentLoading(msg: string) {
@@ -205,6 +220,26 @@ export class HomePage {
                 })
               }
 
+
+
+              getUser(){
+                this.getUserSub = this.http.get(environment.API +'/user')
+                .subscribe({
+                  next: (res:any)=>{
+                    this.users = res['user'];
+                    console.log(this.users);
+                    console.log(res);
+                  },
+                  error:(error) =>{
+                    console.log(error);
+                    
+                  },
+                  complete:() =>{
+                    console.log("get user complete");
+                    
+                  }
+                })
+              }
 
               
               segmentChanged(ev: any){

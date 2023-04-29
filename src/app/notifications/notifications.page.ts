@@ -18,9 +18,10 @@ export class NotificationsPage implements OnInit {
   homeRoute = "";
 
   userRef:any;
-  users:any;
+  users:any[] = [];
 
   acceptUserSub!: Subscription;
+  getUserSub!: Subscription;
   constructor(private router: Router,
               private route: ActivatedRoute,
               private db: Database,
@@ -43,7 +44,12 @@ export class NotificationsPage implements OnInit {
                }
 
   ngOnInit() {
-    this.http.get(environment.API + "/user")
+    this.getUsers();
+  }
+
+
+  getUsers(){
+    this.getUserSub = this.http.get(environment.API + "/user")
     .subscribe((res:any) =>{
       this.users = res['user'];
     console.log(this.users);
@@ -55,8 +61,6 @@ export class NotificationsPage implements OnInit {
       
     })
   }
-
-
 
   Accept(user:any){
   
@@ -103,7 +107,7 @@ export class NotificationsPage implements OnInit {
               .subscribe({
                 next: (value) =>{
                   console.log(value);
-                  
+                  this.getUsers();
                 }, error(err) {
                   console.log(err);
                   
@@ -120,6 +124,7 @@ export class NotificationsPage implements OnInit {
               })
               .subscribe((user:any) =>{
                 console.log(user);
+                
                 
               }, (error:any) =>{
                 console.log(error);

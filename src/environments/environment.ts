@@ -3,7 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  API: "https://moniji.online",
+  API: "https://www.moniji.online",
   firebase: {
     projectId: 'moniji',
     appId: '1:562323217909:web:ff5573527e633add0514bc',

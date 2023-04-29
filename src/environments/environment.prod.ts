@@ -1,5 +1,5 @@
 export const environment = {
-  API: "https://moniji.online",
+  API: "https://www.moniji.online",
 
   firebase: {
     projectId: 'moniji',
