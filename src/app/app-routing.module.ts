@@ -31,6 +31,10 @@ const routes: Routes = [
     path: 'enquiry-detail',
     loadChildren: () => import('./enquiry-detail/enquiry-detail.module').then( m => m.EnquiryDetailPageModule)
   },
+  {
+    path: 'analytics',
+    loadChildren: () => import('./analytics/analytics.module').then( m => m.AnalyticsPageModule)
+  },
 ];
 
 @NgModule({

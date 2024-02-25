@@ -50,9 +50,6 @@ export class HomePage {
                 //   console.log(order);
                 //   console.log("Socket Order ");
                 //   this.orders = order;
-                  
-                  
-                  
                 // })
                 this.getAllOrders(1);
                   this.getUser();
@@ -199,6 +196,11 @@ export class HomePage {
                 this.router.navigate(['settings'])
               }
 
+
+              openAnalytics(){
+                this.router.navigate(['analytics']);
+              }
+
               dateChangedStart(date:any){
                 console.log(date);
                 
@@ -213,7 +215,7 @@ export class HomePage {
                     this.orders = order['order'];
                     
                   },
-                  error: (error) =>{
+                  error: (error) => {
                     console.log(error);
                     
                   }
